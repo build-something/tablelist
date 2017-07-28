@@ -12,9 +12,10 @@ class HButton extends Component {
     }
   }
 
-  handleModal(name, bool){
-    console.log(name, bool)
-    this.setState({name, open:true})
+  handleModal(name){
+     name == "LOGIN" ?
+    this.setState({name: "Log In Form", open:true}) :
+    this.setState({name: "Register Form", open:true})
   }
 
   handleClose(open){
@@ -22,12 +23,12 @@ class HButton extends Component {
   }
 
   render(){
-    console.log(this.state);
-    let {className} = this.props
+    let value = this.props
+    let data = this.state
     return (
       <div>
-        <Button name={this.props.text} className={className} onClick={(e)=>this.handleModal(e.target.name, true)}>{this.props.text}</Button>
-        <Modal open={this.state.open} onCloseClick={(e)=>this.handleClose(e)}/>
+        <Button name={value.text} className={value.color} onClick={(e)=>this.handleModal(e.target.name)}>{value.text}</Button>
+        <Modal value={value.text} color={value.color} header={data.name} open={data.open} onHandle={(e)=>{this.handleClose(e)}}/>
       </div>
     )
   }

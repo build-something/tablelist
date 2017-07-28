@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-// import logo from './logo.svg';
-// import {connect} from 'react-redux'
 import {BrowserRouter, Route} from 'react-router-dom'
 
 import Main from './components'
