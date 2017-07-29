@@ -27,6 +27,12 @@ const login = (state, payload) => {
   return newData
 }
 
+const check = (state, payload) => {
+  let data = {...payload}
+  let newData = {...state, data}
+  return newData
+}
+
 
 let initialState = {
   alert: {
@@ -46,6 +52,7 @@ const employeeList = (store=initialState, actions)=>{
     case 'REGIS': return register(store, actions.payload)
     case 'NETRAL': return netral(store, actions.payload)
     case 'LOGIN': return login(store, actions.payload)
+    case 'CHECK': return check(store, actions.payload)
     default: return store
   }
 }

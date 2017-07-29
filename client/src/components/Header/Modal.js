@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Modal, Button, Form, Label} from 'semantic-ui-react'
 
-import {saving, login} from '../actions'
+import {saving, login} from '../../actions'
 
 class Modals extends Component {
   constructor(props){
@@ -10,28 +10,57 @@ class Modals extends Component {
     this.state={
       username:"",
       password:"",
-      label: true
+      labelU: false,
+      labelP: false
     }
   }
 
   close(){
-    this.setState({username: "", password: ""})
+    let clear = {
+      username: "",
+      password: "",
+      labelU: false,
+      labelP: false
+    }
+    this.setState(clear)
     this.props.onHandle(false)
   }
 
   handleChange(event){
-    let newData = {...this.state}
-    newData[event.name] = event.value
-    this.setState(newData)
+    let stateInitial = this.state
+    if(event.name === "username"&& stateInitial.labelU && !stateInitial.username){
+      let newData = {...this.state, labelU: false}
+      newData[event.name] = event.value
+      this.setState(newData)
+    } else if(event.name === "password" && stateInitial.labelP && !stateInitial.password){
+      let newData = {...this.state, labelP: false}
+      newData[event.name] = event.value
+      this.setState(newData)
+    } else {
+      let newData = {...this.state}
+      newData[event.name] = event.value
+      this.setState(newData)
+    }
   }
 
   handleEvent(event){
+    let data = this.state
     if(event.name === "LOGIN"){
       this.props.login(this.state)
       this.close();
     }else {
-      this.props.register(this.state)
-      this.close()
+      let labelU = true,
+          labelP = true
+
+      if(data.username && data.password.length >= 2){
+        this.props.register(this.state)
+        this.close()
+      } else {
+        if(!data.username) this.setState({labelU})
+        if(!data.password || data.password.length <2){
+          this.setState({labelP})
+        }
+      }
     }
   }
 
@@ -55,14 +84,15 @@ class Modals extends Component {
              <label>Username</label>
              <Form.Field inline>
                <input name="username" onChange={(e)=>this.handleChange(e.target)} style={styles.input} type='text' placeholder='Username' />
-               {stating.label && stating.username ?this.renderLabel('username cannot be empty'):null}
+               {stating.labelU && !stating.username ?this.renderLabel('username cannot be empty'):null}
              </Form.Field>
            </Form.Field>
            <Form.Field>
              <label>Password</label>
              <Form.Field inline>
                <input name="password" onChange={(e)=>this.handleChange(e.target)} style={styles.input} type='password' placeholder='Username' />
-               {stating.label && stating.username ? this.renderLabel('password must be 2 caracter or more'):null}
+               {stating.labelP && (!stating.password || stating.password.length < 2) ? this.renderLabel('password must be 2 caracter or more')
+               : null}
              </Form.Field>
            </Form.Field>
          </Form>

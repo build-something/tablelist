@@ -1,4 +1,21 @@
 
+export const check = (value, token) => {
+  if(value === 'token'){
+    return dispatch => (
+      fetch('http://localhost:3000/user/checkToken',{
+        headers: {
+          'token': token
+        }
+      })
+      .then(res => res.json())
+      .then(resolve => (
+        dispatch({type: "CHECK", payload: {token, username: resolve.username}})
+      ))
+      .catch(err => console.log(err))
+    )
+  }
+}
+
 
 export const saving = (data) => {
   return dispatch => (
@@ -17,6 +34,7 @@ export const saving = (data) => {
 
 export const netral = (value)=>{
   if(value === 'token') return {type:"NETRAL", payload:value}
+    return {type:"NETRAL", payload:value}
 }
 
 export const login = (data)=>{

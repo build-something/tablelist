@@ -4,7 +4,7 @@ import { Button } from 'semantic-ui-react'
 import {connect} from 'react-redux'
 import {netral} from '../../actions'
 
-import Modal from '../Modal'
+import Modal from './Modal'
 
 class HButton extends Component {
   constructor(props) {

@@ -5,16 +5,19 @@ let controllers = new Object()
 
 //get employee
 controllers.getemployee = (req, res)=>{
-  Employee.find({}).then((users)=>{
-    res.send(users)
-  })
+  jwt.verify(req.headers.token, process.env.SECRET, function(err, decoded) {
+  if(err) res.send({message: "Log In First"})
+    Employee.find({}).then((users)=>{
+      res.send(users)
+    })
+})
 }
 
 // create employee
 controllers.employee = (req, res)=>{
   let data = req.body
   if(req.headers.token){
-      let decode = jwt.verify(req.headers.token, process.env.SECRET)
+      jwt.verify(req.headers.token, process.env.SECRET)
       let saving = new Promise((resolve, reject)=>{
         let dummy = Array.apply(null,new Array(1000)).map((value, index)=>{
           return ({employee: `${data.username} ${index+1}`})

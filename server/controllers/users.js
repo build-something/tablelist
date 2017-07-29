@@ -6,6 +6,13 @@ require('dotenv').config()
 
 let controllers = new Object()
 
+controllers.checkToken = (req, res)=>{
+  jwt.verify(req.headers.token, process.env.SECRET, (err, decoded)=>{
+    if(err) res.send(err)
+    res.send(decoded)
+  })
+}
+
 controllers.signIn = (req,res)=>{
   let data = req.body
   User.findOne({username: data.username},(err, user)=>{
@@ -14,7 +21,10 @@ controllers.signIn = (req,res)=>{
         let token = jwt.sign({
                       username: data.username
                     }, process.env.SECRET, {expiresIn: '1d'})
-        res.send({token})
+        jwt.verify(token, process.env.SECRET, function(err, decoded){
+          if(err) res.send(err)
+          res.send({username:decoded.username, token})
+        });
       })
     }
   })

@@ -4,7 +4,7 @@ import { Menu, Image} from 'semantic-ui-react'
 
 import logo from '../../public/image/logo.svg';
 import '../../public/css/App.css';
-import {netral} from '../../actions'
+import {netral, check} from '../../actions'
 
 import Button from './Button'
 
@@ -35,8 +35,10 @@ class MainHeader extends Component {
   }
 
   componentWillMount() {
-    console.log(this.props);
-   console.log('Component WILL MOUNT!')
+    console.log('will',this.props);
+    let token = localStorage.getItem('token')
+    if(localStorage.hasOwnProperty('token')) this.props.checkAvailableToken(token)
+    console.log('Component WILL MOUNT!')
   }
 
   componentDidMount() {
@@ -44,12 +46,12 @@ class MainHeader extends Component {
   }
 
 componentWillReceiveProps(newProps) {
-  console.log(newProps);
+  console.log('receiv',newProps);
   let checkStorage = localStorage.getItem('token')
   let receive = newProps.store.employee
   if(receive.alert.status) this.alerting(receive.alert.message)
   if(receive.data.token !== "" && !checkStorage) this.setToken(receive.data, checkStorage)
-  if(receive.data.token === "") this.clearToken()
+  if(receive.data.token === "" && checkStorage) this.clearToken()
    console.log('Component WILL RECIEVE PROPS!')
 }
 
@@ -70,7 +72,7 @@ componentWillReceiveProps(newProps) {
 
   render(){
     let data = localStorage.getItem('token')
-    console.log(this.state);
+    console.log('render',this.state);
     return(
         <Menu>
           <Image src={logo} style={{marginTop:5}} className="App-logo"/>
@@ -99,7 +101,8 @@ const mapStateToProps = state =>({
 })
 
 const mapDispatchToStore = dispatch => ({
-  netral: (value) => dispatch(netral(value))
+  netral: (value) => dispatch(netral(value)),
+  checkAvailableToken: (value) => dispatch(check('token', value))
 })
 
 export default connect(mapStateToProps, mapDispatchToStore)(MainHeader)
