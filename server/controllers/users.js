@@ -18,14 +18,20 @@ controllers.signIn = (req,res)=>{
   User.findOne({username: data.username},(err, user)=>{
     if(user){
       bcrypt.compare(data.password, user.password).then(resolve => {
-        let token = jwt.sign({
-                      username: data.username
-                    }, process.env.SECRET, {expiresIn: '1d'})
-        jwt.verify(token, process.env.SECRET, function(err, decoded){
-          if(err) res.send(err)
-          res.send({username:decoded.username, token})
-        });
+        if(resolve){
+          let token = jwt.sign({
+            username: data.username
+          }, process.env.SECRET, {expiresIn: '1d'})
+          jwt.verify(token, process.env.SECRET, function(err, decoded){
+            if(err) res.send(err)
+            res.send({username: decoded.username, token})
+          });
+        } else {
+          res.send({message: `username & password not match`})
+        }
       })
+    } else {
+      res.send({message: `username & password not match`})
     }
   })
 }

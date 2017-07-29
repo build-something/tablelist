@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import { Button } from 'semantic-ui-react'
 
 import {connect} from 'react-redux'
-import {netral} from '../../actions'
+import {netral, showing} from '../../actions'
 
 import Modal from './Modal'
 
@@ -25,12 +25,17 @@ class HButton extends Component {
         this.setState({name: "Register Form", open:true})
         break;
       case "INSERT":
-        this.setState({name: "Create Data", open:true})
+        this.handleShowTabel(this.props.token)
         break;
       default:
         this.props.logout('token')
         break;
     }
+  }
+
+  handleShowTabel(token){
+    // this.setState({name: "Create Data", open:true})
+    this.props.showing({token})
   }
 
   handleClose(open){
@@ -50,7 +55,8 @@ class HButton extends Component {
 }
 
 const mapDispatchToStore = dispatch =>({
-  logout: (value)=> dispatch(netral(value))
+  logout: (value) => dispatch(netral(value)),
+  showing: (value) => dispatch(showing(value))
 })
 
 export default connect(null, mapDispatchToStore)(HButton)

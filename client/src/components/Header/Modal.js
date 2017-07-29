@@ -44,14 +44,18 @@ class Modals extends Component {
   }
 
   handleEvent(event){
-    let data = this.state
+    let data = this.state,
+        labelU = true,
+        labelP = true
     if(event.name === "LOGIN"){
-      this.props.login(this.state)
-      this.close();
-    }else {
-      let labelU = true,
-          labelP = true
-
+      if(data.username && data.password){
+        this.props.login(this.state)
+        this.close();
+      } else {
+        if(!data.username) this.setState({labelU})
+        if(!data.password) this.setState({labelP})
+      }
+    } else {
       if(data.username && data.password.length >= 2){
         this.props.register(this.state)
         this.close()
@@ -84,15 +88,22 @@ class Modals extends Component {
              <label>Username</label>
              <Form.Field inline>
                <input name="username" onChange={(e)=>this.handleChange(e.target)} style={styles.input} type='text' placeholder='Username' />
-               {stating.labelU && !stating.username ?this.renderLabel('username cannot be empty'):null}
+               { modal.value === "LOGIN" ? stating.labelU ? this.renderLabel('Username Field is Required')
+                    : null
+                 : stating.labelU && !stating.username ? this.renderLabel('username cannot be empty')
+                    : null
+               }
              </Form.Field>
            </Form.Field>
            <Form.Field>
              <label>Password</label>
              <Form.Field inline>
                <input name="password" onChange={(e)=>this.handleChange(e.target)} style={styles.input} type='password' placeholder='Username' />
-               {stating.labelP && (!stating.password || stating.password.length < 2) ? this.renderLabel('password must be 2 caracter or more')
-               : null}
+               { modal.value === "LOGIN" ? stating.labelP ? this.renderLabel('Password Field is Required')
+                    : null
+                 : stating.labelP && (!stating.password || stating.password.length < 2) ? this.renderLabel('password must be 2 caracter or more')
+                    : null
+               }
              </Form.Field>
            </Form.Field>
          </Form>

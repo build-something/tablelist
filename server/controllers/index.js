@@ -10,31 +10,28 @@ controllers.getemployee = (req, res)=>{
     Employee.find({}).then((users)=>{
       res.send(users)
     })
-})
+  })
 }
 
 // create employee
 controllers.employee = (req, res)=>{
   let data = req.body
-  if(req.headers.token){
-      jwt.verify(req.headers.token, process.env.SECRET)
-      let saving = new Promise((resolve, reject)=>{
-        let dummy = Array.apply(null,new Array(1000)).map((value, index)=>{
-          return ({employee: `${data.username} ${index+1}`})
+      jwt.verify(req.headers.token, process.env.SECRET, (err, decode) => {
+        if(err) res.send({message: 'login dulu please'})
+        let saving = new Promise((resolve, reject)=>{
+          let dummy = Array.apply(null,new Array(1000)).map((value, index)=>{
+            return ({employee: `Jhon Doe ${index + 1}`})
+          })
+          Employee.insertMany(dummy).then((value)=>{
+            resolve(value)
+          }).catch((err)=>{
+            reject(err)
+          })
         })
-        console.log(dummy)
-        Employee.insertMany(dummy).then(()=>{
-          resolve({message:'has been add'})
-        }).catch((err)=>{
-          reject(err)
+        saving.then((value)=>{
+          res.send(value)
         })
       })
-      saving.then((message)=>{
-        res.send(message)
-      })
-  } else {
-    res.send({message: 'login dulu please'})
-  }
 }
 
 module.exports = controllers

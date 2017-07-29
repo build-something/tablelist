@@ -4,7 +4,7 @@ const register = (state, payload) =>{
   let alert = payload.hasOwnProperty("message") ?
     {...state.alert, ...payload, status:true}
   :
-    {...state.alert, message:"Register Sucess", status: true}
+    {...state.alert, message: "Register Sucess", status: true}
   let newData = {...state, alert}
   return newData
 }
@@ -22,14 +22,25 @@ const netral = (state, payload) => {
 }
 
 const login = (state, payload) => {
-  let data = {...state.data, ...payload}
-  let newData = {...state, data}
-  return newData
+  if(payload.hasOwnProperty('message')){
+    let alert = {...state.alert, ...payload, status: true}
+    let newData = {...state, alert}
+    return newData
+  } else {
+    let data = {...state.data, ...payload}
+    let newData = {...state, data}
+    return newData
+  }
 }
 
 const check = (state, payload) => {
   let data = {...payload}
   let newData = {...state, data}
+  return newData
+}
+
+const show = (state, payload) => {
+  let newData = {...state, list: payload}
   return newData
 }
 
@@ -53,6 +64,7 @@ const employeeList = (store=initialState, actions)=>{
     case 'NETRAL': return netral(store, actions.payload)
     case 'LOGIN': return login(store, actions.payload)
     case 'CHECK': return check(store, actions.payload)
+    case 'SHOW': return show(store, actions.payload)
     default: return store
   }
 }

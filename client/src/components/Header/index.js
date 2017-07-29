@@ -35,25 +35,20 @@ class MainHeader extends Component {
   }
 
   componentWillMount() {
-    console.log('will',this.props);
     let token = localStorage.getItem('token')
     if(localStorage.hasOwnProperty('token')) this.props.checkAvailableToken(token)
-    console.log('Component WILL MOUNT!')
   }
 
   componentDidMount() {
-     console.log('Component DID MOUNT!')
   }
 
-componentWillReceiveProps(newProps) {
-  console.log('receiv',newProps);
-  let checkStorage = localStorage.getItem('token')
-  let receive = newProps.store.employee
-  if(receive.alert.status) this.alerting(receive.alert.message)
-  if(receive.data.token !== "" && !checkStorage) this.setToken(receive.data, checkStorage)
-  if(receive.data.token === "" && checkStorage) this.clearToken()
-   console.log('Component WILL RECIEVE PROPS!')
-}
+  componentWillReceiveProps(newProps) {
+    let checkStorage = localStorage.getItem('token')
+    let receive = newProps.store.employee
+    if(receive.alert.status) this.alerting(receive.alert.message)
+    if(receive.data.token !== "" && !checkStorage) this.setToken(receive.data, checkStorage)
+    if(receive.data.token === "" && checkStorage) this.clearToken()
+  }
 
   setToken(user, bool){
     if(!bool) localStorage.setItem('token', user.token);
@@ -62,7 +57,6 @@ componentWillReceiveProps(newProps) {
 
   clearToken(){
     localStorage.removeItem('token');
-    console.log('ini dulu jalan');
   }
 
   alerting(value){
@@ -71,16 +65,15 @@ componentWillReceiveProps(newProps) {
   }
 
   render(){
-    let data = localStorage.getItem('token')
-    console.log('render',this.state);
+    let initToken = localStorage.getItem('token')
     return(
         <Menu>
           <Image src={logo} style={{marginTop:5}} className="App-logo"/>
           <Menu.Menu position="right" >
-            { data ?
+            { initToken ?
               this.state.active.map((value, index)=>(
               <Menu.Item key={index} style={{padding:5}}>
-                <Button color={value.color} text={value.name}/>
+                <Button token={initToken} color={value.color} text={value.name}/>
               </Menu.Item>
               ))
               :

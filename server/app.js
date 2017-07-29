@@ -21,6 +21,7 @@ const db_config = {
   test: 'mongodb://localhost/testing-tablelist'
 }
 const app_env = app.settings.env
+mongoose.Promise = global.Promise;
 mongoose.connect(db_config[app_env],{
   useMongoClient: true,
 },(err=>{
