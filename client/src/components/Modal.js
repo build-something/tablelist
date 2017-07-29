@@ -1,12 +1,16 @@
 import React, {Component} from 'react'
-import {Modal, Button, Form} from 'semantic-ui-react'
+import {connect} from 'react-redux'
+import {Modal, Button, Form, Label} from 'semantic-ui-react'
+
+import {saving, login} from '../actions'
 
 class Modals extends Component {
   constructor(props){
     super(props)
     this.state={
       username:"",
-      password:""
+      password:"",
+      label: true
     }
   }
 
@@ -22,15 +26,26 @@ class Modals extends Component {
   }
 
   handleEvent(event){
-    event.name === "LOGIN" ?
-    console.log('login') : console.log('register')
+    if(event.name === "LOGIN"){
+      this.props.login(this.state)
+      this.close();
+    }else {
+      this.props.register(this.state)
+      this.close()
+    }
+  }
+
+  renderLabel(desc){
+    return(
+      <Label basic color='red' pointing='left'>{desc}</Label>
+    )
   }
 
   render(){
-    console.log(this.state);
     let modal = this.props
+    let stating = this.state
     return(
-      <Modal size="mini" open={modal.open} onClose={()=>this.close()}>
+      <Modal size="tiny" open={modal.open} onClose={()=>this.close()}>
        <Modal.Header>
          {this.props.header}
        </Modal.Header>
@@ -38,11 +53,17 @@ class Modals extends Component {
          <Form>
            <Form.Field>
              <label>Username</label>
-             <input name="username" onChange={(e)=>this.handleChange(e.target)} style={styles.input} type='text' placeholder='Username' />
+             <Form.Field inline>
+               <input name="username" onChange={(e)=>this.handleChange(e.target)} style={styles.input} type='text' placeholder='Username' />
+               {stating.label && stating.username ?this.renderLabel('username cannot be empty'):null}
+             </Form.Field>
            </Form.Field>
            <Form.Field>
              <label>Password</label>
-             <input name="password" onChange={(e)=>this.handleChange(e.target)} style={styles.input} type='password' placeholder='Username' />
+             <Form.Field inline>
+               <input name="password" onChange={(e)=>this.handleChange(e.target)} style={styles.input} type='password' placeholder='Username' />
+               {stating.label && stating.username ? this.renderLabel('password must be 2 caracter or more'):null}
+             </Form.Field>
            </Form.Field>
          </Form>
        </Modal.Content>
@@ -59,10 +80,13 @@ class Modals extends Component {
 
 const styles = {
   input:{
-    width: "17rem"
+    width: "15rem"
   }
 }
 
+const mapDispatchToStore = dispatch =>({
+  register: data => dispatch(saving(data)),
+  login: data => dispatch(login(data))
+})
 
-
-export default Modals
+export default connect(null, mapDispatchToStore)(Modals)

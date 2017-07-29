@@ -1,6 +1,9 @@
 import React, {Component} from 'react'
 import { Button } from 'semantic-ui-react'
 
+import {connect} from 'react-redux'
+import {netral} from '../../actions'
+
 import Modal from '../Modal'
 
 class HButton extends Component {
@@ -12,10 +15,22 @@ class HButton extends Component {
     }
   }
 
+
   handleModal(name){
-     name == "LOGIN" ?
-    this.setState({name: "Log In Form", open:true}) :
-    this.setState({name: "Register Form", open:true})
+    switch (name) {
+      case "LOGIN":
+        this.setState({name: "Log In Form", open:true})
+        break;
+      case "SIGNUP":
+        this.setState({name: "Register Form", open:true})
+        break;
+      case "INSERT":
+        this.setState({name: "Create Data", open:true})
+        break;
+      default:
+        this.props.logout('token')
+        break;
+    }
   }
 
   handleClose(open){
@@ -34,4 +49,8 @@ class HButton extends Component {
   }
 }
 
-export default HButton
+const mapDispatchToStore = dispatch =>({
+  logout: (value)=> dispatch(netral(value))
+})
+
+export default connect(null, mapDispatchToStore)(HButton)

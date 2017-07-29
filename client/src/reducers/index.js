@@ -1,8 +1,8 @@
 import {combineReducers} from 'redux'
-import employeeList from './employeeList'
+import employee from './employeeList'
 
 const rootReducer = combineReducers({
-  employee : employeeList
+  employee
 })
 
 export default rootReducer
