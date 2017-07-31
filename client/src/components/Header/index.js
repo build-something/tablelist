@@ -24,7 +24,7 @@ class MainHeader extends Component {
       username: "",
       active: [
         {
-          name: "INSERT",
+          name: "SHOWING",
           color: "twitter"
         },{
           name: "LOGOUT",

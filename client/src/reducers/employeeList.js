@@ -11,8 +11,7 @@ const register = (state, payload) =>{
 
 const netral = (state, payload) => {
   if(payload === 'token'){
-    let data = {...initialState.data}
-    let newData = {...state, data}
+    let newData = {...state, ...initialState}
     return newData
   } else {
     let alert = {...state.alert, ...initialState.alert}
@@ -40,10 +39,25 @@ const check = (state, payload) => {
 }
 
 const show = (state, payload) => {
-  let newData = {...state, list: payload}
+  let newData = {...state, list: payload, loader: false}
   return newData
 }
 
+const loading = (state, payload) => {
+  let newData = {...state, loader: payload}
+  return newData
+}
+
+const checkPages = (state, payload)=>{
+  if(payload === 'next'){
+    let nextPage = {...state}
+    nextPage['pages'] += 1
+    return nextPage
+  }
+  let prevPages = {...state}
+  prevPages['pages'] -= 1
+  return prevPages
+}
 
 let initialState = {
   alert: {
@@ -54,7 +68,9 @@ let initialState = {
     username: "",
     token: ""
   },
-  list:[]
+  list:[],
+  loader: false,
+  pages: 1
 };
 
 
@@ -65,6 +81,8 @@ const employeeList = (store=initialState, actions)=>{
     case 'LOGIN': return login(store, actions.payload)
     case 'CHECK': return check(store, actions.payload)
     case 'SHOW': return show(store, actions.payload)
+    case 'LOADER': return loading(store, actions.payload)
+    case 'CHECK_PAGES': return checkPages(store, actions.payload)
     default: return store
   }
 }

@@ -4,7 +4,10 @@ import thunk from 'redux-thunk'
 
 import rootReducer from '../reducers'
 
-const middlewares = applyMiddleware(logger, thunk)
-const store = createStore(rootReducer, middlewares)
+const middlewares = (environment) =>{
+  if(environment === 'development') return applyMiddleware(logger, thunk)
+    return applyMiddleware(thunk)
+}
+const store = createStore(rootReducer, middlewares(process.env.NODE_ENV))
 
 export default store

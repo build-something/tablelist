@@ -17,7 +17,8 @@ app.use(cors())
 //connection MongoDB
 // mongoose.connect('mongodb://localhost/tablelist');
 const db_config = {
-  development: 'mongodb://localhost/tablelist',
+  development: 'mongodb://zanisis:bRRpUNwN9D1gScdJ@cluster0-shard-00-00-dalpt.mongodb.net:27017,cluster0-shard-00-01-dalpt.mongodb.net:27017,cluster0-shard-00-02-dalpt.mongodb.net:27017/tablelist?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin',
+  production: 'mongodb://zanisis:bRRpUNwN9D1gScdJ@cluster0-shard-00-00-dalpt.mongodb.net:27017,cluster0-shard-00-01-dalpt.mongodb.net:27017,cluster0-shard-00-02-dalpt.mongodb.net:27017/tablelist?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin',
   test: 'mongodb://localhost/testing-tablelist'
 }
 const app_env = app.settings.env

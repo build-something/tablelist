@@ -1,6 +1,6 @@
 export const login = (data)=>{
   return dispatch => (
-    fetch('http://localhost:3000/user/signIn', {
+    fetch('http://tablelisting-env.pkdb42fkwq.ap-southeast-1.elasticbeanstalk.com/user/signIn', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -16,7 +16,7 @@ export const login = (data)=>{
 //sign up
 export const saving = (data) => {
   return dispatch => (
-    fetch('http://localhost:3000/user/signUp', {
+    fetch('http://tablelisting-env.pkdb42fkwq.ap-southeast-1.elasticbeanstalk.com/user/signUp', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -32,7 +32,7 @@ export const saving = (data) => {
 export const check = (value, token) => {
   if(value === 'token'){
     return dispatch => (
-      fetch('http://localhost:3000/user/checkToken',{
+      fetch('http://tablelisting-env.pkdb42fkwq.ap-southeast-1.elasticbeanstalk.com/user/checkToken',{
         headers: {
           'token': token
         }
@@ -53,10 +53,10 @@ export const netral = (value)=>{
 
 export const showing = (token)=>{
   return dispatch => (
-    fetch('http://localhost:3000/employee',{
+    fetch('http://tablelisting-env.pkdb42fkwq.ap-southeast-1.elasticbeanstalk.com/employee',{
       method: 'POST',
       headers: {
-        ...token,
+        token
       }
     })
     .then(res => res.json())
@@ -68,3 +68,10 @@ export const showing = (token)=>{
   )
 }
 
+export const running = () => {
+  return dispatch => (dispatch({type: "LOADER", payload: true}))
+}
+
+export const checkPages = (payload) => {
+  return ({type: 'CHECK_PAGES', payload})
+}
